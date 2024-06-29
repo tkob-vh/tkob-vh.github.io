@@ -10,11 +10,11 @@ title = "tkob-vh"
   dateFormat = "2 January 2006"
   # logo = "img/logo.png"
   # secondaryLogo = "img/secondary-logo.png"
-  # description = "My awesome website"
+  description = "My website which contains my thoughts and blogs."
   # copyright = "Copy, _right?_ :thinking_face:"
 
-# [author]
-  name = "YYX"
+[author]
+  name = "tkob-vh"
 #   image = "img/blowfish_logo.png"
 #   headline = "I'm only human"
 #   bio = "A little bit about you"
