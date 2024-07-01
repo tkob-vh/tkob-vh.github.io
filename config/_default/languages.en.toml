@@ -8,14 +8,14 @@ title = "tkob-vh"
   isoCode = "en"
   rtl = false
   dateFormat = "2 January 2006"
-  # logo = "img/logo.png"
+  # logo = "../../assets/images/Moon.jpg"
   # secondaryLogo = "img/secondary-logo.png"
   description = "My website which contains my thoughts and blogs."
   # copyright = "Copy, _right?_ :thinking_face:"
 
 [author]
   name = "tkob-vh"
-#   image = "img/blowfish_logo.png"
+  # image = "../../assets/images/"
 #   headline = "I'm only human"
 #   bio = "A little bit about you"
   links = [
