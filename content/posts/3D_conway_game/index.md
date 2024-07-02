@@ -2,7 +2,6 @@
 title = "Optimize 3D Conway's Game of life using CUDA"
 date = 2024-06-29T12:40:21+08:00
 draft = true
-categories = ["CUDA"]
 tags = ["CUDA", "HPC", "Optimization", "SIMD", "Shared Memory"]
 +++
 # 3D Conway's Game of Life using CUDA.
@@ -349,3 +348,5 @@ A100：
 * [CUDA: Shared Memory](https://medium.com/@fatlip/cuda-shared-memory-23cd1a0d4e39)
 * [CUDA-Shared-Memory-Bank](https://leimao.github.io/blog/CUDA-Shared-Memory-Bank)
 * Programming Massively Parallel Processors: A Hands-on Approach 4th edition
+
+

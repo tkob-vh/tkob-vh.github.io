@@ -31,7 +31,7 @@ disableTextInHeader = false
 [footer]
   showMenu = true
   showCopyright = true
-  showThemeAttribution = true
+  showThemeAttribution = false
   showAppearanceSwitcher = true
   showScrollToTop = true
 
@@ -67,7 +67,7 @@ disableTextInHeader = false
   showHeadingAnchors = true
   showPagination = true
   invertPagination = false
-  showReadingTime = true
+  showReadingTime = false
   showTableOfContents = true
   # showRelatedContent = false
   # relatedContentLimit = 3

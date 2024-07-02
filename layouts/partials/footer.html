@@ -1,0 +1,85 @@
+<footer id="site-footer" class="py-10 print:hidden">
+  {{/* Footer menu */}}
+  {{ if .Site.Params.footer.showMenu | default true }}
+    {{ if .Site.Menus.footer }}
+    <nav class="flex flex-row pb-4 text-base font-medium text-neutral-500 dark:text-neutral-400">
+      <ul class="flex flex-col list-none sm:flex-row">
+        {{ range .Site.Menus.footer }}
+        <li class="flex mb-1 ltr:text-right rtl:text-left sm:mb-0 ltr:sm:mr-7 ltr:sm:last:mr-0 rtl:sm:ml-7 rtl:sm:last:ml-0">
+          <a class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2 flex items-center" href="{{ .URL }}"
+            title="{{ .Title }}">
+            {{ if .Pre }}
+            <span {{ if and .Pre .Name}} class="mr-1" {{ end }}>
+                {{ partial "icon.html" .Pre }}
+            </span>
+            {{ end }}
+            {{ .Name | markdownify }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </nav>
+    {{ end }}
+  {{ end }}
+  <div class="flex items-center justify-between">
+
+    {{/* Copyright and Creative Commons */}}
+    {{ if .Site.Params.footer.showCopyright | default true }}
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      <a href="https://tkob-vh.github.io" style="display:inline-block;">
+        This website
+      </a>
+      {{- with replace .Site.Params.copyright "{ year }" now.Year  }}
+      {{ . | markdownify }}
+      {{- else }}
+      &copy;
+      {{ now.Format "2006" }}
+      by
+      {{ .Site.Author.name | markdownify }}
+      {{- end }}
+      is licensed under 
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">
+        CC BY-NC-SA 4.0
+        <span style="display:inline-block;">
+          <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;display:inline-block;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="">
+          <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;display:inline-block;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="">
+          <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;display:inline-block;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="">
+          <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;display:inline-block;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt="">
+        </span>
+      </a>
+
+    </p>
+    {{ end }}
+
+    {{/* Theme attribution */}}
+    {{ if .Site.Params.footer.showThemeAttribution | default true }}
+    <p class="text-xs text-neutral-500 dark:text-neutral-400">
+      {{ $hugo := printf `<a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a>`
+      }}
+      {{ $blowfish := printf `<a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a>` }}
+      {{ i18n "footer.powered_by" (dict "Hugo" $hugo "Theme" $blowfish) | safeHTML }}
+    </p>
+    {{ end }}
+
+  </div>
+
+  <script>
+    {{ if not .Site.Params.disableImageZoom | default true }}
+    mediumZoom(document.querySelectorAll("img:not(.nozoom)"), {
+      margin: 24,
+      background: 'rgba(0,0,0,0.5)',
+      scrollOffset: 0,
+    })
+    {{ end }}
+  </script>
+  {{ $jsProcess := resources.Get "js/process.js" }}
+  {{ $jsProcess = $jsProcess | resources.Minify | resources.Fingerprint "sha512" }}
+  <script type="text/javascript" src="{{ $jsProcess.RelPermalink }}" integrity="{{ $jsProcess.Data.Integrity }}"></script>
+  {{/* Extend footer - eg. for extra scripts, etc. */}}
+  {{ if templates.Exists "partials/extend-footer.html" }}
+  {{ partialCached "extend-footer.html" . }}
+  {{ end }}
+</footer>
+
