@@ -1,0 +1,8 @@
+<!-- layouts/shortcodes/img.html -->
+<figure {{ with .Get "class" }}class="{{ . }}"{{ end }}>
+    <img src="{{ .Get "src" }}" alt="{{ .Get "alt" }}" {{ with .Get "width" }}width="{{ . }}"{{ end }} {{ with .Get "height" }}height="{{ . }}"{{ end }} />
+    {{ if .Get "caption" }}
+      <figcaption>{{ .Get "caption" }}</figcaption>
+    {{ end }}
+  </figure>
+  
