@@ -1,6 +1,7 @@
 +++
 title = "Optimize 3D Conway's Game of life using CUDA"
 date = 2024-06-29T12:40:21+08:00
+lastmod = 2024-07-05T21:44:20+08:00
 draft = false
 tags = ["CUDA", "HPC", "Optimization", "SIMD", "Shared Memory"]
 +++
