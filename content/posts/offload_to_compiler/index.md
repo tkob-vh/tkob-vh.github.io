@@ -2,7 +2,7 @@
 title = 'How to offload optimizations to the compilers efficiently'
 date = 2023-11-05T12:40:56+08:00
 lastmod = 2024-07-05T20:35:55+08:00
-draft = true
+draft = false
 categories = ["compiler"]
 tags = ["HPC", "Optimization", "PGO", "LTO"]
 +++
