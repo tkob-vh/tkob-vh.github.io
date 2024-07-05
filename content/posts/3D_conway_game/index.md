@@ -6,9 +6,7 @@ tags = ["CUDA", "HPC", "Optimization", "SIMD", "Shared Memory"]
 +++
 # 3D Conway's Game of Life using CUDA.
 
-今年HPCGame出了一道CUDA题，要求模拟3D康威生命游戏。
-
-康威生命游戏是英国数学家约翰・何顿・康威在1970年发明的细胞自动机。在初始版本的生命游戏中，世界是一个二维的方格矩阵，其中，每个方格中居住着存活或者死亡的细胞。一个细胞在下一时刻的生死取决于相邻的八个方块中居住的存活或者死亡的细胞的数量。
+今年HPCGame出了一道CUDA题，要求模拟3D康威生命游戏。康威生命游戏是英国数学家约翰・何顿・康威在1970年发明的细胞自动机。在初始版本的生命游戏中，世界是一个二维的方格矩阵，其中，每个方格中居住着存活或者死亡的细胞。一个细胞在下一时刻的生死取决于相邻的八个方块中居住的存活或者死亡的细胞的数量。
 
 而3D版本的康威生命游戏的状态转移规则如下：
 
@@ -27,6 +25,8 @@ tags = ["CUDA", "HPC", "Optimization", "SIMD", "Shared Memory"]
 先仿照baseline代码写个最基本的cuda实现，很容易就搓出来了下面的代码：
 
 ```cpp
+// M: The length of the 3D matrix.
+// N: The number of iterations.
 __global__ void conway_step(uint8_t *curr_space, uint8_t *next_space, size_t M) {
 
   int i = blockDim.z * blockIdx.z + threadIdx.z;
@@ -87,18 +87,22 @@ __global__ void conway_step(uint8_t *curr_space, uint8_t *next_space, size_t M) 
 
 > 小知识：shared memory是NVIDIA GPU上的一类内存，有效地使用shared memory可以显著提升计算密度（arithmetic intensity），减少global memory的访问次数。
 
-一个非常直观的划分方式就是一个block负责与该block维度相同的input tile，每个thread对应一个单元（细胞），并负责将其load到shared memory中。该input tile最外面的一层（halo region）在该block中仅当作输入，即对应的thread并不计算该单元在下一个迭代中的存活情况。分块方式类似下面图片所示（图片仅展示了2维矩阵，3维类似，且该题中单方向的halo region为1个单元，而图片为2个）：
-![input tile](pics/IMG_0125.jpg)
-![output tile](pics/IMG_0126.jpg)
+因为矩阵是3维的，所以一个非常直观的划分方式就是把整个边长为M的矩阵划分为若干个3维cuda block，一个block负责与该block维度，边长均相同的input tile，每个thread对应一个单元（细胞），并负责将其load到shared memory中。该input tile最外面的一层（halo region）在该block中仅当作输入，即对应的thread并不计算该单元在下一个迭代中的存活情况。分块方式类似下面图片所示（图片仅展示了2维矩阵，3维类似，且该题中单方向的halo region为1个单元，而图片为2个）：
+
+{{< img src="pics/IMG_0125.jpg" width="75%" height="auto" caption="input tile example" >}}
+{{< img src="pics/IMG_0126.jpg" width="75%" height="auto" caption="output tile example" >}}
+
 
 因此需要分配一个与block大小相同的3维shared memory，之后的计算类似上面的基本实现。假设block维度是16 x 8 x 8 = 1024，那么shared memory的大小也应为1024，其中，最外面的一层thread仅负责将halo region的单元load到shared memory中，即在最终的计算过程中，这些线程保持idle。因此最终仅有（15 x 7 x 7）/ 1024 = 71.8% 的参与output tile 的运算。另一方面，单个warp的32个线程需要从2个地方load输入数据，无法进行memory coalesce。
 
 > 小知识：shared memory早在NVIDIA Tesla架构就存在了，在Volta架构及之后，NVIDIA便将L1 data cache 和 shared memory结合了起来（物理结合）并延续至今（之所以强调延续至今，是因为在Volta架构之前L1 data cache和shared memory经历过分而复合，合而复分的爱恨情仇），简化了编程和优化的复杂度，同时提升了性能。在V100中，单个SM中的L1 data cache和shared memory共占128KB，而在A100中，这个数值提升到了192KB。在程序中可以通过`cudaFuncSetAttribute()`动态调整shared memory的大小。
 
-因为单个细胞的计算只需用到邻近的26个细胞，因此可以把3维的block转化为xy平面的2维block，其中每个block中的thread依次将z方向上所需要的细胞load到shared memory中并进行计算，下图为第2次迭代时shared memory和input tile的对应情况。
-![Conway v2](pics/IMG_0127.jpg)
+因为单个细胞的计算只需用到包含自身的邻近27个细胞，为边长为3的3维小矩阵，因此可以把3维的block转化为xy平面的2维block，其中每个block中的thread沿z方向迭代，将所需要的细胞load到shared memory中并进行计算，下图为第2次迭代时shared memory和input tile的对应情况，当前正在计算z=1的细胞的下一状态。
+{{< img src="pics/IMG_0127.jpg" width="75%" height="auto" >}}
 
-每个block沿着z方向进行迭代，迭代次数`Z_ITER`可根据实际情况进行微调。
+之所以说“沿z方向迭代”，是因为若单个block仅计算一层xy平面的细胞，则每次都需要将该层细胞的前后两层细胞读到shared memory中，存在大量的重复工作，shared memory利用率也很低。若沿z方向迭代`Z_ITER`次，则单个block计算`Z_ITER`层细胞，一共需要从global memory中load$Z_ITER + 2$次。迭代次数`Z_ITER + 2`可根据实际情况进行微调。
+
+
 该版本的代码如下所示：
 
 ```cpp
@@ -272,7 +276,7 @@ __global__ void conway_step(uint32_t *curr_space, uint32_t *next_space, size_t w
 
 ## Comparision
 
-分别在L40和A100上测试这几个版本，得到以下对比结果（单位：ms）。
+分别在L40和A100上测试这几个版本，得到以下对比结果（单位：ms，M：矩阵边长，N：迭代次数）。
 
 L40：
 
