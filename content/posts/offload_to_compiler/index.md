@@ -261,24 +261,23 @@ icx/icpx: `-flto/-ipo`
 总之，”是个人都会的调参“是一件复杂繁琐的事，选择较新版本的编译器，正确的使用pragma语句和builtin函数，清楚编译器所做的工作，并结合PGO、IPO等工具，可以为我们节省一些时间。
 
 ## References
-> [Software optimization resources. C++ and assembly. Windows, Linux, BSD, Mac OS X](https://www.agner.org/optimize/) 
-> [Performance Analysis and Tuning on Modern CPUs](https://faculty.cs.niu.edu/~winans/notes/patmc.pdf) 
-> https://johnnysswlab.com/ 
-> https://easyperf.net/ 
-> https://github.com/hellogcc/100-gcc-tips/blob/master/src/index.md 
-> [Excessive loop unrolling](https://github.com/llvm/llvm-project/issues/42332) 
-> https://yashwantsingh.in/posts/loop-unroll/  
-> https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html  
-> https://llvm.org/docs/BranchWeightMetadata.html  
-> https://intel.github.io/llvm-docs/clang/UsersManual.html#profile-guided-optimization 
-> https://developer.android.com/games/agde/pgo-overview 
-> https://johnnysswlab.com/tune-your-programs-speed-with-profile-guided-optimizations/ 
-> [鸟哥的compiler私房菜-优化学习篇](https://jyi2ya.github.io/2023/10/01/note/lto-plo/main/) 
-> https://documentation.suse.com/sbp/server-linux/single-html/SBP-GCC-11/index.html 
-> https://gcc.gnu.org/onlinedocs/gccint/LTO.html 
-> https://blog.llvm.org/2016/06/thinlto-scalable-and-incremental-lto.html 
-> https://gcc.gnu.org/onlinedocs/gcc/Developer-Options.html 
-> https://www.intel.com/content/www/us/en/docs/dpcpp-cpp-compiler/developer-guide-reference/2023-2/compiler-options.html  
-> https://clang.llvm.org/docs/UsersManual.html#options-to-emit-optimization-reports  
-> [intel HWPGO](https://www.intel.com/content/www/us/en/developer/articles/technical/hwpgo.html)
-
+* [Software optimization resources. C++ and assembly. Windows, Linux, BSD, Mac OS X](https://www.agner.org/optimize/) 
+* [Performance Analysis and Tuning on Modern CPUs](https://faculty.cs.niu.edu/~winans/notes/patmc.pdf) 
+* https://johnnysswlab.com/ 
+* https://easyperf.net/ 
+* https://github.com/hellogcc/100-gcc-tips/blob/master/src/index.md 
+* [Excessive loop unrolling](https://github.com/llvm/llvm-project/issues/42332) 
+* https://yashwantsingh.in/posts/loop-unroll/  
+* https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html  
+* https://llvm.org/docs/BranchWeightMetadata.html  
+* https://intel.github.io/llvm-docs/clang/UsersManual.html#profile-guided-optimization 
+* https://developer.android.com/games/agde/pgo-overview 
+* https://johnnysswlab.com/tune-your-programs-speed-with-profile-guided-optimizations/ 
+* [鸟哥的compiler私房菜-优化学习篇](https://jyi2ya.github.io/2023/10/01/note/lto-plo/main/) 
+* https://documentation.suse.com/sbp/server-linux/single-html/SBP-GCC-11/index.html 
+* https://gcc.gnu.org/onlinedocs/gccint/LTO.html 
+* https://blog.llvm.org/2016/06/thinlto-scalable-and-incremental-lto.html 
+* https://gcc.gnu.org/onlinedocs/gcc/Developer-Options.html 
+* https://www.intel.com/content/www/us/en/docs/dpcpp-cpp-compiler/developer-guide-reference/2023-2/compiler-options.html  
+* https://clang.llvm.org/docs/UsersManual.html#options-to-emit-optimization-reports  
+* [intel HWPGO](https://www.intel.com/content/www/us/en/developer/articles/technical/hwpgo.html)
