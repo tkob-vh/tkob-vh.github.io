@@ -5,6 +5,7 @@ lastmod = 2024-07-05T20:35:55+08:00
 draft = false
 categories = ["compiler"]
 tags = ["HPC", "Optimization", "PGO", "LTO"]
+description = "This article introduces what the compilers do to optimize your codes how to offload some optimizations to the compilers using PGO, LTO..."
 +++
 
 

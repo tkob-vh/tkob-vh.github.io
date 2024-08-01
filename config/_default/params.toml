@@ -69,12 +69,12 @@ disableTextInHeader = false
   invertPagination = false
   showReadingTime = false
   showTableOfContents = true
-  # showRelatedContent = false
-  # relatedContentLimit = 3
+  showRelatedContent = true
+  relatedContentLimit = 3
   showTaxonomies = true
   showAuthorsBadges = false
   showWordCount = true
-  # sharingLinks = [ "linkedin", "twitter", "bluesky", "reddit", "pinterest", "facebook", "email", "whatsapp", "telegram"]
+  sharingLinks = [ "linkedin", "twitter", "bluesky", "reddit", "pinterest", "facebook", "email", "whatsapp", "telegram"]
   showZenMode = false
 
 [list]
