@@ -53,6 +53,7 @@ disableTextInHeader = false
   showDateOnlyInArticle = false
   showDateUpdated = true
   showAuthor = true
+  showComments = true
   # showAuthorBottom = false
   showHero = true
   heroStyle = "background" # valid options: basic, big, background, thumbAndBackground
